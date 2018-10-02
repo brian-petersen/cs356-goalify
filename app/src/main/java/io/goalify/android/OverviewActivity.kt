@@ -1,7 +1,7 @@
 package io.goalify.android
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_overview.*
 
@@ -17,5 +17,9 @@ class OverviewActivity : AppCompatActivity() {
             GoalOverview("Read Scriptures"),
             GoalOverview("Eat food")
         ))
+
+        buttonCreate.setOnClickListener {
+            startActivity(CreateActivity.newIntent(this))
+        }
     }
 }
