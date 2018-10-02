@@ -1,70 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:orientation="horizontal">
+    android:layout_marginLeft="@dimen/screen_padding"
+    android:layout_marginRight="@dimen/screen_padding"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    custom:contentPadding="5dp">
 
-    <TextView
-        android:id="@+id/textViewGoalName"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="20dp"
-        android:text="Read Scriptures" />
+        android:orientation="horizontal">
 
-    <FrameLayout
-        android:layout_width="@dimen/overview_day_width"
-        android:layout_height="wrap_content">
-
-        <CheckBox
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textViewGoalName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="true"/>
-    </FrameLayout>
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:textSize="18sp"
+            android:text="Read Scriptures" />
 
-    <FrameLayout
-        android:layout_width="@dimen/overview_day_width"
-        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="@dimen/overview_day_width"
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="true"/>
-    </FrameLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"/>
+        </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="@dimen/overview_day_width"
-        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="@dimen/overview_day_width"
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="true"/>
-    </FrameLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"/>
+        </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="@dimen/overview_day_width"
-        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="@dimen/overview_day_width"
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="true"/>
-    </FrameLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"/>
+        </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="@dimen/overview_day_width"
-        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="@dimen/overview_day_width"
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="true"/>
-    </FrameLayout>
-</LinearLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="@dimen/overview_day_width"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"/>
+        </FrameLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

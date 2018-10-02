@@ -12,10 +12,10 @@ class OverviewActivity : AppCompatActivity() {
 
         setContentView(R.layout.layout_overview)
 
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.adapter = OverviewViewAdapter(listOf(
-//            GoalOverview(name = "Read Scriptures"),
-//            GoalOverview(name = "Eat food")
-//        ))
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = OverviewViewAdapter(listOf(
+            GoalOverview("Read Scriptures"),
+            GoalOverview("Eat food")
+        ))
     }
 }
