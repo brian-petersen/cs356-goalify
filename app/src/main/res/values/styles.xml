@@ -4,4 +4,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="OverviewDay" parent="AppTheme">
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>
