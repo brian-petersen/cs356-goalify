@@ -3,6 +3,7 @@ package io.goalify.android
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
 import kotlinx.android.synthetic.main.layout_overview.*
 
 class OverviewActivity : AppCompatActivity() {
@@ -13,7 +14,7 @@ class OverviewActivity : AppCompatActivity() {
         setContentView(R.layout.layout_overview)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = OverviewViewAdapter(listOf(
+        recyclerView.adapter = OverviewViewAdapter(this, listOf(
             GoalOverview("Read Scriptures"),
             GoalOverview("Eat food")
         ))
