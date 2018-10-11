@@ -29,9 +29,32 @@ class OverviewActivity : AppCompatActivity() {
         }
 
         val model = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-        model.getGoals().observe(this, Observer<List<Goal>>{
+        model.getGoals().observe(this, Observer {
             adapter.goals = it
             adapter.notifyDataSetChanged()
         })
+
+        // Test Goals
+        AppDatabase.getInstance()?.goalDao()?.create(
+            Goal(
+                name = "Test 1",
+                question = "Test 1?",
+                frequency = 0,
+                reminderHourOfDay = 15,
+                reminderMinute = 0,
+                reminderFrequency = 0
+            )
+        )
+
+        AppDatabase.getInstance()?.goalDao()?.create(
+            Goal(
+                name = "Test 2",
+                question = "Test 2?",
+                frequency = 0,
+                reminderHourOfDay = 15,
+                reminderMinute = 0,
+                reminderFrequency = 0
+            )
+        )
     }
 }

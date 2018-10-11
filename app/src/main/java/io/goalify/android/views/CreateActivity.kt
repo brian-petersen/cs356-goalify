@@ -8,6 +8,7 @@ import android.text.format.DateFormat
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import formatTime
 import io.goalify.android.R
 import io.goalify.android.models.AppDatabase
 import io.goalify.android.models.Goal
@@ -17,6 +18,7 @@ import io.goalify.android.viewmodels.CreateViewModel
 import kotlinx.android.synthetic.main.layout_create.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 class CreateActivity : AppCompatActivity() {
 
@@ -52,7 +54,7 @@ class CreateActivity : AppCompatActivity() {
 
         // TODO on app rotate this are null for some reason...
         editTextName.afterTextChanged { model.name = it }
-        editTextName.afterTextChanged { model.question = it }
+        editTextQuestion.afterTextChanged { model.question = it }
         spinnerFrequency.itemSelected { model.frequencyIndex = it }
         spinnerReminderFrequency.itemSelected { model.reminderFrequencyIndex = it }
 
@@ -91,12 +93,7 @@ class CreateActivity : AppCompatActivity() {
             return
         }
 
-        val cal = Calendar.getInstance()
-
-        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        cal.set(Calendar.MINUTE, minute)
-
-        buttonReminderTime.text = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT).format(cal.time)
+        buttonReminderTime.text = formatTime(hourOfDay, minute)
     }
 
     private fun attemptSave() {

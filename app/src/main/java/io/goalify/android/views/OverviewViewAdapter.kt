@@ -28,7 +28,7 @@ class OverviewViewAdapter(
 
         holder.nameTextView.text = goal.name
         holder.nameTextView.setOnClickListener {
-            context.startActivity(DetailActivity.newIntent(context))
+            context.startActivity(DetailActivity.newIntent(context, goal.id))
         }
     }
 

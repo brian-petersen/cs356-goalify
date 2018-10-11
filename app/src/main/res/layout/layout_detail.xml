@@ -30,16 +30,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingBottom="5dp"
-                    android:textSize="18sp"
-                    android:text="Did you read your scriptures for 3 minutes?" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textViewReminder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="15sp"
-                    android:text="Everyday @ 5:30 PM"/>
+                    android:textSize="15sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
