@@ -1,9 +1,8 @@
 package io.goalify.android
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_overview.*
 
 class OverviewActivity : AppCompatActivity() {
