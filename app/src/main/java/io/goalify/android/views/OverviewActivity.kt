@@ -33,8 +33,5 @@ class OverviewActivity : AppCompatActivity() {
             adapter.goals = it
             adapter.notifyDataSetChanged()
         })
-
-        // TODO remove this test statement
-        AppDatabase.getInstance()?.goalDao()?.create(Goal(name = "Hi"))
     }
 }

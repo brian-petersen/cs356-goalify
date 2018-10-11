@@ -19,6 +19,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textAutoCorrect|textCapWords"
@@ -30,6 +31,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/editTextQuestion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textAutoCorrect|textCapSentences|textAutoComplete|text"
@@ -65,7 +67,7 @@
                 style="?android:attr/spinnerStyle"
                 android:paddingLeft="8dp"
                 android:textSize="16dp"
-                android:text="Select a time" />
+                android:text="@string/reminder_prompt" />
 
             <TextView
                 android:layout_width="wrap_content"

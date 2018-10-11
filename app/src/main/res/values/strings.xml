@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Goalify</string>
 
+    <string name="reminder_prompt">Select a time</string>
     <string-array name="frequencies">
         <item>Daily</item>
         <item>Weekly</item>
