@@ -1,12 +1,13 @@
-package io.goalify.android
+package io.goalify.android.views
 
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.text.format.DateFormat
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
+import io.goalify.android.R
 import kotlinx.android.synthetic.main.layout_create.*
 import java.text.SimpleDateFormat
 import java.util.*

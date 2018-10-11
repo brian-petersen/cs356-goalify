@@ -1,16 +1,18 @@
-package io.goalify.android
+package io.goalify.android.views
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import io.goalify.android.R
+import io.goalify.android.models.Goal
 import kotlinx.android.synthetic.main.fragment_overview_detail.view.*
 
 class OverviewViewAdapter(
-        private val context: Context,
-        private val goals: List<GoalOverview>
+    private val context: Context,
+    var goals: List<Goal>
 ) : RecyclerView.Adapter<OverviewViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
