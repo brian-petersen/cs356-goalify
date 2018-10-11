@@ -12,7 +12,7 @@ import io.goalify.android.R
 import io.goalify.android.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.layout_detail.*
 
-private const val INVALID_ID = -1
+private const val INVALID_ID = -1L
 
 private const val INTENT_GOAL_ID = "goal_id"
 
@@ -21,7 +21,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val goalId = intent.getIntExtra(INTENT_GOAL_ID, INVALID_ID)
+        val goalId = intent.getLongExtra(INTENT_GOAL_ID, INVALID_ID)
         if (goalId == INVALID_ID) {
             throw IllegalStateException("Invalid goal id")
         }
@@ -58,7 +58,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun newIntent(context: Context, goalId: Int): Intent {
+        fun newIntent(context: Context, goalId: Long): Intent {
             val intent = Intent(context, DetailActivity::class.java)
 
             intent.putExtra(INTENT_GOAL_ID, goalId)

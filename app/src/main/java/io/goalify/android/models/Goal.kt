@@ -5,7 +5,7 @@ import androidx.room.*
 
 @Entity
 data class Goal(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo val name: String = "",
     @ColumnInfo val question: String = "",
     @ColumnInfo val frequency: Int = -1,
@@ -18,7 +18,7 @@ data class Goal(
 interface GoalDao {
 
     @Query("SELECT * FROM Goal where id = :id")
-    fun getById(id: Int): LiveData<Goal>
+    fun getById(id: Long): LiveData<Goal>
 
     @Query("SELECT * FROM Goal")
     fun getAll(): LiveData<List<Goal>>

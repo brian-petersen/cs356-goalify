@@ -9,7 +9,7 @@ class DetailViewModel : ViewModel() {
 
     private lateinit var goal: LiveData<Goal>
 
-    fun getGoal(id: Int): LiveData<Goal> {
+    fun getGoal(id: Long): LiveData<Goal> {
         AppDatabase.getInstance()?.goalDao()?.getById(id)?.let {
             goal = it
         }

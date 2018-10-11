@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import formatTime
@@ -100,18 +101,21 @@ class CreateActivity : AppCompatActivity() {
         val model = getModel()
 
         if (model.name.isBlank()) {
+            Toast.makeText(this, "Name cannot be blank.", Toast.LENGTH_SHORT).show()
             return
         }
 
         if (model.question.isBlank()) {
+            Toast.makeText(this, "Question cannot be blank.", Toast.LENGTH_SHORT).show()
             return
         }
 
         if (model.reminderHourOfDay < 0 || model.reminderMinute < 0) {
+            Toast.makeText(this, "Choose a reminder time.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        database?.goalDao()?.create(Goal(
+        val goalId = database?.goalDao()?.create(Goal(
             name = model.name,
             question = model.question,
             frequency =  model.frequencyIndex,
@@ -120,7 +124,13 @@ class CreateActivity : AppCompatActivity() {
             reminderFrequency = model.reminderFrequencyIndex
         ))
 
-        onBackPressed()
+        if (goalId == null) {
+            Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        startActivity(DetailActivity.newIntent(this, goalId))
+        finish()
     }
 
     companion object {
