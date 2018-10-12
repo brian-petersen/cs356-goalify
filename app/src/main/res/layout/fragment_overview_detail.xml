@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="true"/>
+                android:checked="false"/>
         </FrameLayout>
 
         <FrameLayout
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="true"/>
+                android:checked="false"/>
         </FrameLayout>
 
         <FrameLayout
@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="true"/>
+                android:checked="false"/>
         </FrameLayout>
 
         <FrameLayout
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="true"/>
+                android:checked="false"/>
         </FrameLayout>
 
         <FrameLayout
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="true"/>
+                android:checked="false"/>
         </FrameLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

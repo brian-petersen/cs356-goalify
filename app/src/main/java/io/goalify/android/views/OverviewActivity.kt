@@ -37,7 +37,7 @@ class OverviewActivity : AppCompatActivity() {
 
         setSummaryDayLabels()
 
-        createTestGoals(20)
+        createTestGoals(1)
     }
 
     private fun getSummaryDays(): List<Calendar> {
