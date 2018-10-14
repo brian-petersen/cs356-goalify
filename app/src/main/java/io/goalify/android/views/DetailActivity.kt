@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import formatTime
@@ -33,8 +34,13 @@ class DetailActivity : AppCompatActivity() {
         val model = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         model.getGoal(goalId).observe(this, Observer {
             title = it.name
-            textViewQuestion.text = it.question
-            textViewReminder.text = formatReminderText(it.reminderHourOfDay, it.reminderMinute, it.reminderFrequency)
+            if (it.reminderHourOfDay == -1 || it.reminderMinute == -1 || it.reminderFrequency == -1){
+                textViewQuestion.text = "No notification set"
+                textViewReminder.visibility = View.GONE
+            } else {
+                textViewQuestion.text = it.question
+                textViewReminder.text = formatReminderText(it.reminderHourOfDay, it.reminderMinute, it.reminderFrequency)
+            }
         })
     }
 

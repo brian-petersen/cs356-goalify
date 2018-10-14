@@ -14,12 +14,15 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".views.DetailActivity" />
-
         <activity android:name=".views.CreateActivity" />
+        <activity android:name=".views.CreateNameActivity" />
+        <activity android:name=".views.CreateAskNotificationActivity" />
+        <activity android:name=".views.CreateNotificationActivity"></activity>
     </application>
+
 </manifest>

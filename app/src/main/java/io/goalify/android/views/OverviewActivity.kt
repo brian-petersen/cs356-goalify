@@ -26,7 +26,7 @@ class OverviewActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         buttonCreate.setOnClickListener {
-            startActivity(CreateActivity.newIntent(this))
+            startActivity(CreateNameActivity.newIntent(this))
         }
 
         val model = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
@@ -99,7 +99,6 @@ class OverviewActivity : AppCompatActivity() {
                 Goal(
                     name = "Test $i",
                     question = "Test $i?",
-                    frequency = 0,
                     reminderHourOfDay = 15,
                     reminderMinute = 0,
                     reminderFrequency = 0
