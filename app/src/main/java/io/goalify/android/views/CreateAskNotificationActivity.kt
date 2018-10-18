@@ -48,6 +48,12 @@ class CreateAskNotificationActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+
+        return true
+    }
+
     companion object {
         fun newIntent(context: Context, goalName: String): Intent {
             val intent = Intent(context, CreateAskNotificationActivity::class.java)

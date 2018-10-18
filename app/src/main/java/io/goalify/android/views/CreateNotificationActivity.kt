@@ -126,4 +126,10 @@ class CreateNotificationActivity : AppCompatActivity() {
             return intent
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+
+        return true
+    }
 }
