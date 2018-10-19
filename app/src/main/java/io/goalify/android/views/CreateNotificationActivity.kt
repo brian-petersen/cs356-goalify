@@ -1,6 +1,6 @@
 package io.goalify.android.views
 
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +18,18 @@ import io.goalify.android.utils.itemSelected
 import io.goalify.android.viewmodels.CreateViewModel
 import kotlinx.android.synthetic.main.layout_create_notification.*
 import java.util.*
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import io.goalify.android.utils.NotificationBroadcastReceiver
+import android.app.AlarmManager
+import android.content.Context.ALARM_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import android.app.PendingIntent
+import io.goalify.android.utils.NotificationScheduleReceiver
+
 
 private const val INTENT_GOAL_NAME = "goal_name"
+private const val INTENT_GOAL_ID = "goal_id"
 
 class CreateNotificationActivity : AppCompatActivity() {
 
@@ -105,7 +115,25 @@ class CreateNotificationActivity : AppCompatActivity() {
             Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
         }
 
+        setNotification(model, goalId as Long)
+
         finish()
+    }
+
+
+
+    private fun setNotification(model: CreateViewModel, goalId: Long){
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, model.reminderHourOfDay)
+        calendar.set(Calendar.MINUTE, model.reminderMinute)
+        calendar.set(Calendar.SECOND, 0)
+        val intent = Intent(this, NotificationScheduleReceiver::class.java)
+        intent.putExtra(INTENT_GOAL_ID, goalId)
+        intent.putExtra(INTENT_GOAL_NAME, model.name)
+        intent.putExtra("goal_question", model.question)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
     private fun setReminderText(hourOfDay: Int, minute: Int) {
