@@ -196,7 +196,27 @@ class CreateActivity : AppCompatActivity() {
             return
         }
 
+        setNotification(model, goalId as Long)
+
         finish()
+    }
+
+    private fun setNotification(model: CreateViewModel, goalId: Long){
+        // TODO get this working
+//            val calendar = Calendar.getInstance()
+//            calendar.set(Calendar.HOUR_OF_DAY, model.reminderHourOfDay)
+//            calendar.set(Calendar.MINUTE, model.reminderMinute)
+//            calendar.set(Calendar.SECOND, 0)
+//
+//            val intent = Intent(this, NotificationScheduleReceiver::class.java)
+//            intent.putExtra(INTENT_GOAL_ID, goalId)
+//            intent.putExtra(INTENT_GOAL_NAME, model.name)
+//            intent.putExtra("goal_question", model.question)
+//
+//            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//            val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//
+//            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
     companion object {
