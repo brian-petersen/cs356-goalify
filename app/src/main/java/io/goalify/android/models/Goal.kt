@@ -29,4 +29,7 @@ interface GoalDao {
 
     @Insert
     fun create(goal: Goal): Long
+
+    @Delete
+    fun delete(goal: Goal)
 }

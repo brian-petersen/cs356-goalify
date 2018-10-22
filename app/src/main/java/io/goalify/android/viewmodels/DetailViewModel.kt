@@ -7,13 +7,22 @@ import io.goalify.android.models.Goal
 
 class DetailViewModel : ViewModel() {
 
-    private lateinit var goal: LiveData<Goal>
+    private val database = AppDatabase.getInstance()
 
-    fun getGoal(id: Long): LiveData<Goal> {
-        AppDatabase.getInstance()?.goalDao()?.getById(id)?.let {
-            goal = it
+    var goal: LiveData<Goal>? = null
+
+    fun setGoal(id: Long) {
+        if (goal == null) {
+            goal = database?.goalDao()?.getById(id)
         }
 
-        return goal
+    }
+
+    fun deleteGoal() {
+        goal?.let { data ->
+            data.value?.let { goal ->
+                database?.goalDao()?.delete(goal)
+            }
+        }
     }
 }

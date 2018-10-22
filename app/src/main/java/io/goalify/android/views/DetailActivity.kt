@@ -2,10 +2,11 @@ package io.goalify.android.views
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import formatTime
@@ -19,6 +20,8 @@ private const val INTENT_GOAL_ID = "goal_id"
 
 class DetailActivity : AppCompatActivity() {
 
+    private fun getModel(): DetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,8 +34,9 @@ class DetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val model = ViewModelProviders.of(this).get(DetailViewModel::class.java)
-        model.getGoal(goalId).observe(this, Observer {
+        val model = getModel()
+        model.setGoal(goalId)
+        model.goal?.observe(this, Observer {
             title = it.name
 
             if (it.hasReminder()) {
@@ -55,6 +59,27 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.overview, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_edit -> {
+                System.out.println("Edit")
+                System.out.print('a')
+            }
+
+            R.id.action_delete -> {
+                val model = getModel()
+                model.goal?.removeObservers(this)
+                model.deleteGoal()
+
+                finish()
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
 
         return true
     }
