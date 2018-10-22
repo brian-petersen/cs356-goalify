@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textAutoCorrect|textCapWords"
                     android:textSize="@dimen/create_text_size"
-                    android:hint="Name (e.g. Reading)" />
+                    android:hint="Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
