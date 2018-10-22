@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +18,7 @@ import io.goalify.android.utils.afterTextChanged
 import io.goalify.android.utils.itemSelected
 import io.goalify.android.viewmodels.CreateViewModel
 import kotlinx.android.synthetic.main.layout_create.*
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.min
 
 class CreateActivity : AppCompatActivity() {
 
@@ -39,25 +38,29 @@ class CreateActivity : AppCompatActivity() {
         val adapter = ArrayAdapter.createFromResource(
             this,
             R.array.frequencies,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        spinnerFrequency.adapter = adapter
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         spinnerReminderFrequency.adapter = adapter
 
         val model = getModel()
         editTextName.setText(model.name)
         editTextQuestion.setText(model.question)
-        spinnerFrequency.setSelection(model.frequencyIndex)
         setReminderText(model.reminderHourOfDay, model.reminderMinute)
         spinnerReminderFrequency.setSelection(model.reminderFrequencyIndex)
+
+        checkBoxUseReminder.isChecked = model.setupReminder
+        linearLayoutReminderFields.visibility = if (model.setupReminder) View.VISIBLE else View.GONE
 
         // TODO on app rotate this are null for some reason...
         editTextName.afterTextChanged { model.name = it }
         editTextQuestion.afterTextChanged { model.question = it }
-        spinnerFrequency.itemSelected { model.frequencyIndex = it }
         spinnerReminderFrequency.itemSelected { model.reminderFrequencyIndex = it }
+
+        checkBoxUseReminder.setOnCheckedChangeListener { _, isChecked ->
+            model.setupReminder = isChecked
+            linearLayoutReminderFields.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
 
         buttonReminderTime.setOnClickListener {
             val cal = Calendar.getInstance()
@@ -105,31 +108,37 @@ class CreateActivity : AppCompatActivity() {
             return
         }
 
-        if (model.question.isBlank()) {
-            Toast.makeText(this, "Question cannot be blank.", Toast.LENGTH_SHORT).show()
-            return
-        }
+        var goalId: Long?
+        if (model.setupReminder) {
+            if (model.question.isBlank()) {
+                Toast.makeText(this, "Reminder question cannot be blank.", Toast.LENGTH_SHORT).show()
+                return
+            }
 
-        if (model.reminderHourOfDay < 0 || model.reminderMinute < 0) {
-            Toast.makeText(this, "Choose a reminder time.", Toast.LENGTH_SHORT).show()
-            return
-        }
+            if (model.reminderHourOfDay < 0 || model.reminderMinute < 0) {
+                Toast.makeText(this, "Choose a reminder time.", Toast.LENGTH_SHORT).show()
+                return
+            }
 
-        val goalId = database?.goalDao()?.create(Goal(
-            name = model.name,
-            question = model.question,
-            frequency =  model.frequencyIndex,
-            reminderHourOfDay = model.reminderHourOfDay,
-            reminderMinute = model.reminderMinute,
-            reminderFrequency = model.reminderFrequencyIndex
-        ))
+            goalId = database?.goalDao()?.create(Goal(
+                name = model.name,
+                question = model.question,
+                reminderHourOfDay = model.reminderHourOfDay,
+                reminderMinute = model.reminderMinute,
+                reminderFrequency = model.reminderFrequencyIndex
+            ))
+        }
+        else {
+            goalId = database?.goalDao()?.create(Goal(
+                name = model.name
+            ))
+        }
 
         if (goalId == null) {
             Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        startActivity(DetailActivity.newIntent(this, goalId))
         finish()
     }
 

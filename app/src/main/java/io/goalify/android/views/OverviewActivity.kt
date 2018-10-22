@@ -99,7 +99,6 @@ class OverviewActivity : AppCompatActivity() {
                 Goal(
                     name = "Test $i",
                     question = "Test $i?",
-                    frequency = 0,
                     reminderHourOfDay = 15,
                     reminderMinute = 0,
                     reminderFrequency = 0

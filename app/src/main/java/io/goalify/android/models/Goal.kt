@@ -8,11 +8,15 @@ data class Goal(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo val name: String = "",
     @ColumnInfo val question: String = "",
-    @ColumnInfo val frequency: Int = -1,
     @ColumnInfo val reminderHourOfDay: Int = -1,
     @ColumnInfo val reminderMinute: Int = -1,
     @ColumnInfo val reminderFrequency: Int = -1
-)
+) {
+    fun hasReminder(): Boolean = question != "" &&
+        reminderHourOfDay != -1 &&
+        reminderMinute != -1 &&
+        reminderFrequency != -1
+}
 
 @Dao
 interface GoalDao {

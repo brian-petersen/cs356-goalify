@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_height="match_parent"
@@ -16,80 +16,89 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/create_margin_bottom"
+                app:hintTextAppearance="@style/HintText">
 
                 <EditText
                     android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textAutoCorrect|textCapWords"
+                    android:textSize="@dimen/create_text_size"
                     android:hint="Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBoxUseReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/create_margin_bottom"
+                android:textSize="@dimen/create_text_size"
+                android:text="Use Reminder Notification"/>
 
-                <EditText
-                    android:id="@+id/editTextQuestion"
+            <LinearLayout
+                android:id="@+id/linearLayoutReminderFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textAutoCorrect|textCapSentences|textAutoComplete|text"
-                    android:hint="Question" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginBottom="@dimen/create_margin_bottom"
+                    app:hintTextAppearance="@style/HintText">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:textSize="12dp"
-                android:text="Frequency" />
+                    <EditText
+                        android:id="@+id/editTextQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textAutoCorrect|textCapSentences|textAutoComplete|text"
+                        android:textSize="@dimen/create_text_size"
+                        android:hint="Reminder Question" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spinnerFrequency"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/create_hint_text_size"
+                    android:text="Reminder" />
+
+                <Button
+                    android:id="@+id/buttonReminderTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/create_margin_bottom"
+                    style="?android:attr/spinnerStyle"
+                    android:paddingLeft="8dp"
+                    android:textSize="@dimen/create_text_size"
+                    android:text="@string/reminder_prompt" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/create_hint_text_size"
+                    android:text="Reminder Frequency" />
+
+                <Spinner
+                    android:id="@+id/spinnerReminderFrequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="@dimen/create_margin_bottom"
+                    android:textSize="@dimen/create_text_size"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSave"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:spinnerMode="dropdown" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:textSize="12dp"
-                android:text="Reminder" />
-
-            <Button
-                android:id="@+id/buttonReminderTime"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                style="?android:attr/spinnerStyle"
-                android:paddingLeft="8dp"
-                android:textSize="16dp"
-                android:text="@string/reminder_prompt" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:textSize="12dp"
-                android:text="Reminder Frequency" />
-
-            <Spinner
-                android:id="@+id/spinnerReminderFrequency"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:spinnerMode="dropdown" />
+                android:textSize="@dimen/create_text_size"
+                android:text="Save" />
         </LinearLayout>
     </ScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_save"
-        android:layout_margin="16dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,4 +3,8 @@
     <dimen name="screen_padding">10dp</dimen>
 
     <dimen name="overview_day_width">40dp</dimen>
+
+    <dimen name="create_margin_bottom">12dp</dimen>
+    <dimen name="create_text_size">18sp</dimen>
+    <dimen name="create_hint_text_size">16sp</dimen>
 </resources>

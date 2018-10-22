@@ -8,4 +8,8 @@
     <style name="OverviewDay" parent="AppTheme">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="HintText" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">@dimen/create_hint_text_size</item>
+    </style>
 </resources>

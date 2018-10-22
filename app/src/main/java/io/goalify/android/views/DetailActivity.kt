@@ -33,8 +33,18 @@ class DetailActivity : AppCompatActivity() {
         val model = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         model.getGoal(goalId).observe(this, Observer {
             title = it.name
-            textViewQuestion.text = it.question
-            textViewReminder.text = formatReminderText(it.reminderHourOfDay, it.reminderMinute, it.reminderFrequency)
+
+            if (it.hasReminder()) {
+                textViewReminder.text = formatReminderText(
+                    it.question,
+                    it.reminderHourOfDay,
+                    it.reminderMinute,
+                    it.reminderFrequency
+                )
+            }
+            else {
+                textViewReminder.text = "No reminder setup. Edit the goal to add one."
+            }
         })
     }
 
@@ -50,11 +60,11 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun formatReminderText(hourOfDay: Int, minute: Int, frequency: Int): String {
+    private fun formatReminderText(question: String, hourOfDay: Int, minute: Int, frequency: Int): String {
         val frequencyString = resources.getStringArray(R.array.frequencies)[frequency]
         val time = formatTime(hourOfDay, minute)
 
-        return "$frequencyString @ $time"
+        return "$question\n$frequencyString @ $time"
     }
 
     companion object {
