@@ -10,6 +10,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun goalDao(): GoalDao
 
+    abstract fun goalDateDao(): GoalDateDao
+
     companion object {
         private var instance: AppDatabase? = null
 
