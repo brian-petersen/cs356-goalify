@@ -17,7 +17,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/create_margin_bottom"
                 app:hintTextAppearance="@style/HintText">
 
                 <EditText
@@ -26,8 +25,17 @@
                     android:layout_height="wrap_content"
                     android:inputType="textAutoCorrect|textCapWords"
                     android:textSize="@dimen/create_text_size"
-                    android:hint="Name" />
+                    android:hint="Name (e.g. Reading)" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/create_margin_bottom"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:textSize="@dimen/create_example_text_size"
+                android:text="Example: Reading" />
 
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkBoxUseReminder"
@@ -46,7 +54,6 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/create_margin_bottom"
                     app:hintTextAppearance="@style/HintText">
 
                     <EditText
@@ -59,17 +66,26 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/create_margin_bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:textSize="@dimen/create_example_text_size"
+                    android:text="Example: Did you read today?" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
                     android:textSize="@dimen/create_hint_text_size"
-                    android:text="Reminder" />
+                    android:text="Reminder Time" />
 
                 <Button
                     android:id="@+id/buttonReminderTime"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="@dimen/create_margin_bottom"
                     style="?android:attr/spinnerStyle"
                     android:paddingLeft="8dp"

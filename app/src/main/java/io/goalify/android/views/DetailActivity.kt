@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import formatTime
@@ -35,14 +36,18 @@ class DetailActivity : AppCompatActivity() {
             title = it.name
 
             if (it.hasReminder()) {
+                textViewQuestion.visibility = View.VISIBLE
+                textViewQuestion.text = it.question
+
                 textViewReminder.text = formatReminderText(
-                    it.question,
                     it.reminderHourOfDay,
                     it.reminderMinute,
                     it.reminderFrequency
                 )
             }
             else {
+                textViewQuestion.visibility = View.GONE
+
                 textViewReminder.text = "No reminder setup. Edit the goal to add one."
             }
         })
@@ -60,11 +65,11 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun formatReminderText(question: String, hourOfDay: Int, minute: Int, frequency: Int): String {
+    private fun formatReminderText(hourOfDay: Int, minute: Int, frequency: Int): String {
         val frequencyString = resources.getStringArray(R.array.frequencies)[frequency]
         val time = formatTime(hourOfDay, minute)
 
-        return "$question\n$frequencyString @ $time"
+        return "$frequencyString @ $time"
     }
 
     companion object {

@@ -104,6 +104,12 @@ class OverviewActivity : AppCompatActivity() {
                     reminderFrequency = 0
                 )
             )
+
+            AppDatabase.getInstance()?.goalDao()?.create(
+                Goal(
+                    name = "Test $i Small"
+                )
+            )
         }
     }
 }

@@ -4,7 +4,8 @@
 
     <dimen name="overview_day_width">40dp</dimen>
 
-    <dimen name="create_margin_bottom">12dp</dimen>
+    <dimen name="create_margin_bottom">14dp</dimen>
     <dimen name="create_text_size">18sp</dimen>
     <dimen name="create_hint_text_size">16sp</dimen>
+    <dimen name="create_example_text_size">13sp</dimen>
 </resources>

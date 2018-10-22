@@ -21,7 +21,7 @@ data class Goal(
 @Dao
 interface GoalDao {
 
-    @Query("SELECT * FROM Goal where id = :id")
+    @Query("SELECT * FROM Goal WHERE id = :id")
     fun getById(id: Long): LiveData<Goal>
 
     @Query("SELECT * FROM Goal")
