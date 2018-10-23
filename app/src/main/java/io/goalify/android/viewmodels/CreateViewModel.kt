@@ -6,6 +6,8 @@ import io.goalify.android.models.AppDatabase
 
 class CreateViewModel : ViewModel() {
 
+    var goalId: Long? = null
+
     val name = MutableLiveData<String>()
     val setupReminder = MutableLiveData<Boolean>()
     val question = MutableLiveData<String>()
@@ -24,6 +26,8 @@ class CreateViewModel : ViewModel() {
 
     fun loadGoal(id: Long) {
         AppDatabase.getInstance()?.goalDao()?.getById(id).let {
+            goalId = id
+
             name.value = it?.name
             setupReminder.value = it?.hasReminder()
             question.value = it?.question

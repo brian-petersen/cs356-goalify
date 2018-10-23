@@ -150,7 +150,7 @@ class CreateActivity : AppCompatActivity() {
             return
         }
 
-        val goalId: Long?
+        val goal: Goal
         if (model.setupReminder.value == true) {
             val question = model.question.value
             val hourOfDay = model.reminderHourOfDay.value
@@ -172,21 +172,26 @@ class CreateActivity : AppCompatActivity() {
                 return
             }
 
-            goalId = database?.goalDao()?.create(Goal(
+            goal = Goal(
                 name = name,
                 question = question,
                 reminderHourOfDay = hourOfDay,
                 reminderMinute = minute,
                 reminderFrequency = frequency
-            ))
+            )
         }
         else {
-            goalId = database?.goalDao()?.create(Goal(
+            goal = Goal(
                 name = name
-            ))
+            )
         }
 
-        if (goalId == null) {
+        val goalId = model.goalId
+        if (goalId != null) {
+            goal.id = goalId
+            database?.goalDao()?.update(goal)
+        }
+        else if (database?.goalDao()?.create(goal) == null) {
             Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
             return
         }

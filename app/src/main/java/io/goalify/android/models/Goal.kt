@@ -5,12 +5,12 @@ import androidx.room.*
 
 @Entity
 data class Goal(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo val name: String = "",
-    @ColumnInfo val question: String = "",
-    @ColumnInfo val reminderHourOfDay: Int = -1,
-    @ColumnInfo val reminderMinute: Int = -1,
-    @ColumnInfo val reminderFrequency: Int = -1
+    @PrimaryKey(autoGenerate = true) var id: Long = 0,
+    @ColumnInfo var name: String = "",
+    @ColumnInfo var question: String = "",
+    @ColumnInfo var reminderHourOfDay: Int = -1,
+    @ColumnInfo var reminderMinute: Int = -1,
+    @ColumnInfo var reminderFrequency: Int = -1
 ) {
     fun hasReminder(): Boolean = question != "" &&
         reminderHourOfDay != -1 &&
@@ -32,6 +32,9 @@ interface GoalDao {
 
     @Insert
     fun create(goal: Goal): Long
+
+    @Update
+    fun update(goal: Goal)
 
     @Delete
     fun delete(goal: Goal)
