@@ -35,7 +35,9 @@ class CreateActivity : AppCompatActivity() {
 
         setContentView(R.layout.layout_create)
 
-        title = "Create Goal"
+        val goalId = intent.getLongExtra(INTENT_GOAL_ID, MISSING_GOAL_ID)
+
+        title = if (goalId == MISSING_GOAL_ID) "Create Goal" else "Edit Goal"
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -49,7 +51,6 @@ class CreateActivity : AppCompatActivity() {
 
         val model = getModel()
 
-        val goalId = intent.getLongExtra(INTENT_GOAL_ID, MISSING_GOAL_ID)
         if (goalId != MISSING_GOAL_ID) {
             model.loadGoal(goalId)
         }
@@ -196,7 +197,8 @@ class CreateActivity : AppCompatActivity() {
             return
         }
 
-        setNotification(model, goalId as Long)
+        // TODO rework getting goal id since it changed how it was working
+//        setNotification(model, goalId as Long)
 
         finish()
     }
