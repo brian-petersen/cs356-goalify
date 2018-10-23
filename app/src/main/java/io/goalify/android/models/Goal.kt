@@ -22,10 +22,13 @@ data class Goal(
 interface GoalDao {
 
     @Query("SELECT * FROM Goal WHERE id = :id")
-    fun getById(id: Long): LiveData<Goal>
+    fun getById(id: Long): Goal
+
+    @Query("SELECT * FROM Goal WHERE id = :id")
+    fun getLiveById(id: Long): LiveData<Goal>
 
     @Query("SELECT * FROM Goal")
-    fun getAll(): LiveData<List<Goal>>
+    fun getLiveAll(): LiveData<List<Goal>>
 
     @Insert
     fun create(goal: Goal): Long

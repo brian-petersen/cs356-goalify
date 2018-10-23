@@ -13,9 +13,8 @@ class DetailViewModel : ViewModel() {
 
     fun setGoal(id: Long) {
         if (goal == null) {
-            goal = database?.goalDao()?.getById(id)
+            goal = database?.goalDao()?.getLiveById(id)
         }
-
     }
 
     fun deleteGoal() {

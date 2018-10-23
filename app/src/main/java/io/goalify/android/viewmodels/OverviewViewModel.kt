@@ -10,7 +10,7 @@ class OverviewViewModel : ViewModel() {
     private lateinit var goals: LiveData<List<Goal>>
 
     fun getGoals(): LiveData<List<Goal>> {
-        AppDatabase.getInstance()?.goalDao()?.getAll()?.let {
+        AppDatabase.getInstance()?.goalDao()?.getLiveAll()?.let {
             goals = it
         }
 

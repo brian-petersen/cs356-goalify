@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import formatTime
 import io.goalify.android.R
@@ -19,6 +20,9 @@ import io.goalify.android.utils.itemSelected
 import io.goalify.android.viewmodels.CreateViewModel
 import kotlinx.android.synthetic.main.layout_create.*
 import java.util.*
+
+private const val MISSING_GOAL_ID = -1L
+private const val INTENT_GOAL_ID = "goal_id"
 
 class CreateActivity : AppCompatActivity() {
 
@@ -31,7 +35,7 @@ class CreateActivity : AppCompatActivity() {
 
         setContentView(R.layout.layout_create)
 
-        setTitle("Create Goal")
+        title = "Create Goal"
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -44,31 +48,44 @@ class CreateActivity : AppCompatActivity() {
         spinnerReminderFrequency.adapter = adapter
 
         val model = getModel()
-        editTextName.setText(model.name)
-        editTextQuestion.setText(model.question)
-        setReminderText(model.reminderHourOfDay, model.reminderMinute)
-        spinnerReminderFrequency.setSelection(model.reminderFrequencyIndex)
 
-        checkBoxUseReminder.isChecked = model.setupReminder
-        linearLayoutReminderFields.visibility = if (model.setupReminder) View.VISIBLE else View.GONE
-
-        // TODO on app rotate this are null for some reason...
-        editTextName.afterTextChanged { model.name = it }
-        editTextQuestion.afterTextChanged { model.question = it }
-        spinnerReminderFrequency.itemSelected { model.reminderFrequencyIndex = it }
-
-        checkBoxUseReminder.setOnCheckedChangeListener { _, isChecked ->
-            model.setupReminder = isChecked
-            linearLayoutReminderFields.visibility = if (isChecked) View.VISIBLE else View.GONE
+        val goalId = intent.getLongExtra(INTENT_GOAL_ID, MISSING_GOAL_ID)
+        if (goalId != MISSING_GOAL_ID) {
+            model.loadGoal(goalId)
         }
+        else {
+            model.loadBlankGoal()
+        }
+
+        editTextName.afterTextChanged { model.name.value = it }
+        model.name.observe(this, Observer {
+            if (editTextName.text.toString() != it) {
+                editTextName.setText(it)
+            }
+        })
+
+        checkBoxUseReminder.setOnCheckedChangeListener { _, isChecked -> model.setupReminder.value = isChecked }
+        model.setupReminder.observe(this, Observer {
+            if (checkBoxUseReminder.isChecked != it) {
+                checkBoxUseReminder.isChecked = it
+            }
+
+            linearLayoutReminderFields.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
+        editTextQuestion.afterTextChanged { model.question.value = it }
+        model.question.observe(this, Observer {
+            if (editTextQuestion.text.toString() != it) {
+                editTextQuestion.setText(it)
+            }
+        })
 
         buttonReminderTime.setOnClickListener {
             val cal = Calendar.getInstance()
 
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                setReminderText(hourOfDay, minute)
-                model.reminderHourOfDay = hourOfDay
-                model.reminderMinute = minute
+                model.reminderHourOfDay.value = hourOfDay
+                model.reminderMinute.value = minute
             }
 
             TimePickerDialog(
@@ -79,6 +96,25 @@ class CreateActivity : AppCompatActivity() {
                 DateFormat.is24HourFormat(this)
             ).show()
         }
+        model.reminderHourOfDay.observe(this, Observer {
+            val format = generateReminderText()
+            if (buttonReminderTime.text != format) {
+                buttonReminderTime.text = format
+            }
+        })
+        model.reminderMinute.observe(this, Observer {
+            val format = generateReminderText()
+            if (buttonReminderTime.text != format) {
+                buttonReminderTime.text = format
+            }
+        })
+
+        spinnerReminderFrequency.itemSelected { model.reminderFrequencyIndex.value = it }
+        model.reminderFrequencyIndex.observe(this, Observer {
+            if (spinnerReminderFrequency.selectedItemPosition != it) {
+                spinnerReminderFrequency.setSelection(it)
+            }
+        })
 
         buttonSave.setOnClickListener {
             attemptSave()
@@ -91,46 +127,62 @@ class CreateActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setReminderText(hourOfDay: Int, minute: Int) {
-        if (hourOfDay < 0 || minute < 0) {
-            buttonReminderTime.setText(R.string.reminder_prompt)
-            return
+    private fun generateReminderText(): String {
+        val model = getModel()
+
+        val hourOfDay = model.reminderHourOfDay.value
+        val minute = model.reminderMinute.value
+
+        if (hourOfDay == null || minute == null || hourOfDay < 0 || minute < 0) {
+            return resources.getString(R.string.reminder_prompt)
         }
 
-        buttonReminderTime.text = formatTime(hourOfDay, minute)
+        return formatTime(hourOfDay, minute)
     }
 
     private fun attemptSave() {
         val model = getModel()
 
-        if (model.name.isBlank()) {
+        val name: String? = model.name.value
+
+        if (name == null || name.isBlank()) {
             Toast.makeText(this, "Name cannot be blank.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        var goalId: Long?
-        if (model.setupReminder) {
-            if (model.question.isBlank()) {
+        val goalId: Long?
+        if (model.setupReminder.value == true) {
+            val question = model.question.value
+            val hourOfDay = model.reminderHourOfDay.value
+            val minute = model.reminderMinute.value
+            val frequency = model.reminderFrequencyIndex.value
+
+            if (question == null || question.isBlank()) {
                 Toast.makeText(this, "Reminder question cannot be blank.", Toast.LENGTH_SHORT).show()
                 return
             }
 
-            if (model.reminderHourOfDay < 0 || model.reminderMinute < 0) {
+            if (hourOfDay == null || minute == null || hourOfDay < 0 || minute < 0) {
                 Toast.makeText(this, "Choose a reminder time.", Toast.LENGTH_SHORT).show()
                 return
             }
 
+            if (frequency == null) {
+                Toast.makeText(this, "Choose a reminder frequency.", Toast.LENGTH_SHORT).show()
+                return
+            }
+
             goalId = database?.goalDao()?.create(Goal(
-                name = model.name,
-                question = model.question,
-                reminderHourOfDay = model.reminderHourOfDay,
-                reminderMinute = model.reminderMinute,
-                reminderFrequency = model.reminderFrequencyIndex
+                name = name,
+                question = question,
+                reminderHourOfDay = hourOfDay,
+                reminderMinute = minute,
+                reminderFrequency = frequency
             ))
         }
         else {
             goalId = database?.goalDao()?.create(Goal(
-                name = model.name
+                name = name
             ))
         }
 
@@ -143,8 +195,12 @@ class CreateActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun newIntent(context: Context): Intent {
-            return Intent(context, CreateActivity::class.java)
+        fun newIntent(context: Context, goalId: Long = MISSING_GOAL_ID): Intent {
+            val intent = Intent(context, CreateActivity::class.java)
+
+            intent.putExtra(INTENT_GOAL_ID, goalId)
+
+            return intent
         }
     }
 }

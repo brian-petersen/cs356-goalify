@@ -66,8 +66,11 @@ class DetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_edit -> {
-                System.out.println("Edit")
-                System.out.print('a')
+                val id = getModel().goal?.value?.id
+
+                if (id != null) {
+                    startActivity(CreateActivity.newIntent(this, id))
+                }
             }
 
             R.id.action_delete -> {
