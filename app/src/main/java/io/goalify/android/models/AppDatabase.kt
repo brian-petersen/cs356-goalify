@@ -10,7 +10,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun goalDao(): GoalDao
 
-    abstract fun goalDateDao(): GoalDateDao
+    // TODO change date since it's not a valid SQL type
+//    abstract fun goalDateDao(): GoalDateDao
 
     companion object {
         private var instance: AppDatabase? = null
@@ -31,6 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                         context,
                         AppDatabase::class.java
                     )
+                        .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()
                         .build()
                 }

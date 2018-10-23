@@ -21,11 +21,11 @@
         <activity android:name=".views.DetailActivity" />
         <activity android:name=".views.CreateActivity" />
 
-        <receiver android:name=".utils.NotificationBroadcastReceiver"  android:exported="true">
+        <receiver android:name=".receivers.NotificationBroadcastReceiver"  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.GOAL_NOTI_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".utils.NotificationScheduleReceiver"/>
+        <receiver android:name=".receivers.NotificationScheduleReceiver"/>
     </application>
 </manifest>

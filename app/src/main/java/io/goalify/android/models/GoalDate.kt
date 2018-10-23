@@ -7,7 +7,7 @@ import java.sql.Date
 @Entity
 data class GoalDate(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo val date : Date
+    @ColumnInfo val date: Date
 )
 
 @Dao

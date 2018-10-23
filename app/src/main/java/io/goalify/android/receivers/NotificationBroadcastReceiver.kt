@@ -1,4 +1,4 @@
-package io.goalify.android.utils
+package io.goalify.android.receivers
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
