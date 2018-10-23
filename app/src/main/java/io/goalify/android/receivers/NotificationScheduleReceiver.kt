@@ -14,22 +14,24 @@ import io.goalify.android.views.DetailActivity
 import java.util.*
 
 private const val INVALID_ID = -1L
+
 private const val INTENT_GOAL_ID = "goal_id"
+private const val INTENT_GOAL_NAME = "goal_name"
+private const val INTENT_GOAL_QUESTION = "goal_question"
 
 class NotificationScheduleReceiver : BroadcastReceiver() {
-
     override fun onReceive(context: Context, intent: Intent) {
-
         val goalId = intent.getLongExtra(INTENT_GOAL_ID, INVALID_ID)
+
         if (goalId == INVALID_ID) {
             throw IllegalStateException("Invalid goal id")
         }
 
-        val goalName = intent.getStringExtra("goal_name")
-        val goalQuestion = intent.getStringExtra("goal_question")
+        val goalName = intent.getStringExtra(INTENT_GOAL_NAME)
+        val goalQuestion = intent.getStringExtra(INTENT_GOAL_QUESTION)
 
         // TODO get this working
-        val dvm = DetailViewModel()
+//        val dvm = DetailViewModel()
 //        val goal = dvm.getGoal(goalId)
 
         // Create an explicit intent for an Activity in your app
@@ -45,14 +47,15 @@ class NotificationScheduleReceiver : BroadcastReceiver() {
         val markCompletePendingIntent: PendingIntent =
             PendingIntent.getBroadcast(context, UUID.randomUUID().hashCode(), markCompleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        var mBuilder = NotificationCompat.Builder(context, "goalify")
-            .setSmallIcon(R.mipmap.ic_launcher)
+        val mBuilder = NotificationCompat.Builder(context, "goalify")
+            .setSmallIcon(R.drawable.ic_save)
             .setContentTitle(goalName)
             .setContentText(goalQuestion)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
+            // TODO chang the icon to something other than save
             .addAction(R.drawable.ic_save, "Mark Complete",
                 markCompletePendingIntent)
 
@@ -71,6 +74,17 @@ class NotificationScheduleReceiver : BroadcastReceiver() {
         }
 
         notificationManager.notify(notificationId, mBuilder.build())
+    }
 
+    companion object {
+        fun newIntent(context: Context, goalId: Long, goalName: String, goalQuestion: String): Intent {
+            val intent = Intent(context, NotificationScheduleReceiver::class.java)
+
+            intent.putExtra(INTENT_GOAL_ID, goalId)
+            intent.putExtra(INTENT_GOAL_NAME, goalName)
+            intent.putExtra(INTENT_GOAL_QUESTION, goalQuestion)
+
+            return intent
+        }
     }
 }

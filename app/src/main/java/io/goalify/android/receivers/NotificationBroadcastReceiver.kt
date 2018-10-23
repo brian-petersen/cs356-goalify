@@ -14,7 +14,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        //Dismiss the notification
+        // Dismiss the notification
         val notiId = intent.getIntExtra("noti_id", -1)
         if (notiId == -1){
             throw IllegalStateException("Invalid Notification Id")
@@ -28,7 +28,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             throw IllegalStateException("Invalid goal id")
         }
 
-        //TODO: Mark today's date as having completed the goal
+        // TODO: Mark today's date as having completed the goal
         Toast.makeText(context, "Placeholder toast. Replace this with code checking today off for goal id: " + goalId + ".", Toast.LENGTH_LONG).show()
     }
 }

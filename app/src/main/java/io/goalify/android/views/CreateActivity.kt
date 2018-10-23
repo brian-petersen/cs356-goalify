@@ -1,5 +1,7 @@
 package io.goalify.android.views
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -15,6 +17,7 @@ import formatTime
 import io.goalify.android.R
 import io.goalify.android.models.AppDatabase
 import io.goalify.android.models.Goal
+import io.goalify.android.receivers.NotificationScheduleReceiver
 import io.goalify.android.utils.afterTextChanged
 import io.goalify.android.utils.itemSelected
 import io.goalify.android.viewmodels.CreateViewModel
@@ -187,38 +190,48 @@ class CreateActivity : AppCompatActivity() {
             )
         }
 
-        val goalId = model.goalId
+        var goalId: Long? = model.goalId
+
+        // editing an existing goal
         if (goalId != null) {
             goal.id = goalId
+
             database?.goalDao()?.update(goal)
         }
-        else if (database?.goalDao()?.create(goal) == null) {
-            Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
-            return
+        // creating a new goal
+        else {
+            goalId = database?.goalDao()?.create(goal)
+
+            if (goalId == null) {
+                Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
+                return
+            }
         }
 
-        // TODO rework getting goal id since it changed how it was working
-//        setNotification(model, goalId as Long)
+        setNotification(goalId)
 
         finish()
     }
 
-    private fun setNotification(model: CreateViewModel, goalId: Long){
-        // TODO get this working
-//            val calendar = Calendar.getInstance()
-//            calendar.set(Calendar.HOUR_OF_DAY, model.reminderHourOfDay)
-//            calendar.set(Calendar.MINUTE, model.reminderMinute)
-//            calendar.set(Calendar.SECOND, 0)
-//
-//            val intent = Intent(this, NotificationScheduleReceiver::class.java)
-//            intent.putExtra(INTENT_GOAL_ID, goalId)
-//            intent.putExtra(INTENT_GOAL_NAME, model.name)
-//            intent.putExtra("goal_question", model.question)
-//
-//            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//            val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//
-//            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+    private fun setNotification(goalId: Long) {
+        database?.goalDao()?.getById(goalId).let {
+            if (it == null) {
+                return
+            }
+
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, it.reminderHourOfDay)
+            calendar.set(Calendar.MINUTE, it.reminderMinute)
+            calendar.set(Calendar.SECOND, 0)
+
+            val intent = NotificationScheduleReceiver.newIntent(this, goalId, it.name, it.question)
+
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            // TODO change interval to reminder frequency
+            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+        }
     }
 
     companion object {
