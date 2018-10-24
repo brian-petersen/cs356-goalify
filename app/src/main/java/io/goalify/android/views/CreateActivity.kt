@@ -208,7 +208,9 @@ class CreateActivity : AppCompatActivity() {
             }
         }
 
-        setNotification(goalId)
+        if (checkBoxUseReminder.isChecked) {
+            setNotification(goalId)
+        }
 
         finish()
     }
