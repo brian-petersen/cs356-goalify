@@ -231,8 +231,8 @@ class CreateActivity : AppCompatActivity() {
             val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-            // TODO change interval to reminder frequency
-            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+            //Notification recurrence is scheduled by the notification appearing in NotificationScheduleReceiver
+            am.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
     }
 

@@ -1,5 +1,6 @@
 package io.goalify.android.receivers
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,6 +10,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import io.goalify.android.R
+import io.goalify.android.models.AppDatabase
 import io.goalify.android.viewmodels.DetailViewModel
 import io.goalify.android.views.DetailActivity
 import java.util.*
@@ -20,6 +22,9 @@ private const val INTENT_GOAL_NAME = "goal_name"
 private const val INTENT_GOAL_QUESTION = "goal_question"
 
 class NotificationScheduleReceiver : BroadcastReceiver() {
+
+    private val database = AppDatabase.getInstance()
+
     override fun onReceive(context: Context, intent: Intent) {
         val goalId = intent.getLongExtra(INTENT_GOAL_ID, INVALID_ID)
 
@@ -71,6 +76,25 @@ class NotificationScheduleReceiver : BroadcastReceiver() {
             }
             // Register the channel with the system
             notificationManager.createNotificationChannel(channel)
+        }
+
+        //Schedule the next notification
+        database?.goalDao()?.getById(goalId).let {
+            if (it == null) {
+                return
+            }
+            val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY, it.reminderHourOfDay)
+            calendar.set(Calendar.MINUTE, it.reminderMinute)
+            calendar.set(Calendar.SECOND, 0)
+
+            when(it.reminderFrequency){
+                0 -> calendar.add(Calendar.DATE, 1)
+                1 -> calendar.add(Calendar.DATE, 7)
+                2 -> calendar.add(Calendar.MONTH, 1)
+            }
+            am.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
 
         notificationManager.notify(notificationId, mBuilder.build())
