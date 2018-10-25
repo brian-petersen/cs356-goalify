@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import io.goalify.android.R
@@ -63,6 +64,9 @@ class NotificationScheduleReceiver : BroadcastReceiver() {
             // TODO chang the icon to something other than save
             .addAction(R.drawable.ic_save, "Mark Complete",
                 markCompletePendingIntent)
+
+        mBuilder.setVibrate(longArrayOf(1000, 500))
+        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
 
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

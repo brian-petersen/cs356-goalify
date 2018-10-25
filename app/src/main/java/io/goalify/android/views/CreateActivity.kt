@@ -208,11 +208,28 @@ class CreateActivity : AppCompatActivity() {
             }
         }
 
+        cancelNotification(goalId)
+
         if (checkBoxUseReminder.isChecked) {
             setNotification(goalId)
         }
 
         finish()
+    }
+
+    private fun cancelNotification(goalId: Long){
+        database?.goalDao()?.getById(goalId).let {
+            if (it == null) {
+                return
+            }
+
+            val intent = NotificationScheduleReceiver.newIntent(this, goalId, it.name, it.question)
+
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            am.cancel(pendingIntent)
+        }
     }
 
     private fun setNotification(goalId: Long) {
