@@ -9,18 +9,51 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.squareup.timessquare.CalendarPickerView
 import formatTime
 import io.goalify.android.R
+import io.goalify.android.R.id.calendarView
+import io.goalify.android.models.AppDatabase
+import io.goalify.android.models.GoalDate
 import io.goalify.android.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.layout_detail.*
+import java.util.*
+
+
 
 private const val INVALID_ID = -1L
 
 private const val INTENT_GOAL_ID = "goal_id"
 
+class DateClick(val calendar:CalendarPickerView, val goalId:Long) : CalendarPickerView.CellClickInterceptor {
+
+    private val database = AppDatabase.getInstance()
+
+    override fun onCellClicked(date: Date?): Boolean {
+
+        val goalDate: GoalDate
+        goalDate = GoalDate (
+            goalId = goalId,
+            date = date!!.time
+        )
+        if (calendar.selectedDates.contains(date)){
+            database?.goalDateDao()?.delete(goalDate.date)
+        } else {
+            database?.goalDateDao()?.create(goalDate)
+        }
+
+        return false
+    }
+
+}
+
 class DetailActivity : AppCompatActivity() {
 
+    private val database = AppDatabase.getInstance()
+
     private fun getModel(): DetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+
+    private val activeDate: Date = Date()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +66,36 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.layout_detail)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val nextYear = Date()
+        nextYear.setYear(nextYear.getYear() + 1)
+        val lastYear = Date()
+        lastYear.setYear(lastYear.getYear() - 1)
+        calendarView.init(lastYear, nextYear)
+            .inMode(CalendarPickerView.SelectionMode.MULTIPLE)
+
+
+        database?.goalDateDao()?.getAllByGoalId(goalId).let {
+            if (it == null) {
+                return
+            }
+            for (goalDate in it){
+                calendarView.selectDate(Date(goalDate.date))
+            }
+        }
+
+        calendarView.scrollToDate(activeDate)
+
+        buttonPrevMonth.setOnClickListener {
+            activeDate.setMonth(activeDate.getMonth() - 1)
+            calendarView.scrollToDate(activeDate)
+        }
+        buttonNextMonth.setOnClickListener {
+            activeDate.setMonth(activeDate.getMonth() + 1)
+            calendarView.scrollToDate(activeDate)
+        }
+
+        calendarView.setCellClickInterceptor(DateClick(calendarView, goalId))
 
         val model = getModel()
         model.setGoal(goalId)

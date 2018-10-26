@@ -38,6 +38,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
+    // https://mvnrepository.com/artifact/com.squareup/android-times-square
+    implementation group: 'com.squareup', name: 'android-times-square', version: '1.7.10'
+
+
     kapt "androidx.room:room-compiler:$room_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 }
