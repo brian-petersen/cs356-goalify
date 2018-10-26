@@ -58,12 +58,13 @@
                     android:textSize="18sp"
                     android:text="History" />
 
-                <!--<CalendarView-->
-                    <!--android:id="@+id/calendarView"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent" />-->
+                <com.squareup.timessquare.CalendarPickerView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -76,7 +77,15 @@
                         android:text="&lt; Previous Month"
                         android:layout_gravity="start"
                         android:textAlignment="textStart"
-                        android:backgroundTint="#fff"/>
+                        android:backgroundTint="#fff"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/emptyView"/>
+
+                    <View
+                        android:id="@+id/emptyView"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_centerHorizontal="true" />
                     <Button
                         android:id="@+id/buttonNextMonth"
                         android:layout_width="wrap_content"
@@ -85,15 +94,10 @@
                         android:text="Next Month &gt;"
                         android:layout_gravity="end"
                         android:textAlignment="textEnd"
-                        android:backgroundTint="#fff"/>
-                </LinearLayout>
-
-                
-                <com.squareup.timessquare.CalendarPickerView
-                    android:id="@+id/calendarView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                        android:backgroundTint="#fff"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/emptyView"/>
+                </RelativeLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
