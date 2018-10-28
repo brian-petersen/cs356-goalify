@@ -21,6 +21,14 @@ data class Goal(
 
 @Dao
 interface GoalDao {
+    @Insert
+    fun create(goal: Goal): Long
+
+    @Update
+    fun update(goal: Goal)
+
+    @Delete
+    fun delete(goal: Goal)
 
     @Query("SELECT * FROM Goal WHERE id = :id")
     fun getById(id: Long): Goal
@@ -30,13 +38,4 @@ interface GoalDao {
 
     @Query("SELECT * FROM Goal")
     fun getLiveAll(): LiveData<List<Goal>>
-
-    @Insert
-    fun create(goal: Goal): Long
-
-    @Update
-    fun update(goal: Goal)
-
-    @Delete
-    fun delete(goal: Goal)
 }

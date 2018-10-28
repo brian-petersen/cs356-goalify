@@ -5,15 +5,19 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import getSummaryDays
 import io.goalify.android.R
 import io.goalify.android.models.AppDatabase
 import io.goalify.android.models.Goal
+import io.goalify.android.models.GoalDate
 import io.goalify.android.viewmodels.OverviewViewModel
 import kotlinx.android.synthetic.main.layout_overview.*
+import normalizeDate
 import java.util.*
 
 class OverviewActivity : AppCompatActivity() {
@@ -27,7 +31,7 @@ class OverviewActivity : AppCompatActivity() {
 
         setContentView(R.layout.layout_overview)
 
-        val adapter = OverviewViewAdapter(this, listOf())
+        val adapter = OverviewViewAdapter(this, listOf(), listOf())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -39,27 +43,21 @@ class OverviewActivity : AppCompatActivity() {
         model.getGoals().observe(this, Observer {
             adapter.goals = it
             adapter.notifyDataSetChanged()
+
+            textViewNoGoals.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+
+            layoutDays.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+        })
+
+        model.getGoalDates().observe(this, Observer {
+            adapter.goalDates = it
+            adapter.notifyDataSetChanged()
         })
 
         setSummaryDayLabels()
 
         createTestGoals(1)
-    }
-
-    private fun getSummaryDays(): List<Calendar> {
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-
-        val days = mutableListOf<Calendar>()
-        days.add(cal.clone() as Calendar)
-        for (i in 1..4) {
-            cal.add(Calendar.DATE, 1)
-            days.add(cal.clone() as Calendar)
-        }
-
-        return days
     }
 
     private fun setSummaryDayLabels() {
@@ -107,6 +105,7 @@ class OverviewActivity : AppCompatActivity() {
             val channel = NotificationChannel("goalify", name, importance).apply {
                 description = descriptionText
             }
+
             // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -126,6 +125,8 @@ class OverviewActivity : AppCompatActivity() {
                     reminderFrequency = 0
                 )
             )
+
+            AppDatabase.getInstance()?.goalDateDao()?.create(GoalDate(goalId = 1, date = normalizeDate(Date())))
 
             AppDatabase.getInstance()?.goalDao()?.create(
                 Goal(

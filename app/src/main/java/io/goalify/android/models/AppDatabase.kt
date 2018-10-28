@@ -9,8 +9,6 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun goalDao(): GoalDao
-
-    // TODO change date since it's not a valid SQL type
     abstract fun goalDateDao(): GoalDateDao
 
     companion object {

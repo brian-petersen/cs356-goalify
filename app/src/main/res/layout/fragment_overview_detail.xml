@@ -31,6 +31,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/checkboxDay1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/checkboxDay2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -53,6 +55,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/checkboxDay3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -64,6 +67,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/checkboxDay4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -75,6 +79,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/checkboxDay5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

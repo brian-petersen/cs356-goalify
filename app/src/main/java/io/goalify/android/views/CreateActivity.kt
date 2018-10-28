@@ -248,7 +248,7 @@ class CreateActivity : AppCompatActivity() {
             val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-            //Notification recurrence is scheduled by the notification appearing in NotificationScheduleReceiver
+            // Notification recurrence is scheduled by the notification appearing in NotificationScheduleReceiver
             am.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
     }

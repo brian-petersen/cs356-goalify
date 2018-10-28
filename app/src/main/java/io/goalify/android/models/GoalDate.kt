@@ -3,7 +3,7 @@ package io.goalify.android.models
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
-@Entity
+@Entity(indices = [Index("goalId", "date", unique = true)])
 data class GoalDate(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo val goalId: Long,
@@ -13,20 +13,15 @@ data class GoalDate(
 @Dao
 interface GoalDateDao {
 
-    @Query("SELECT * FROM GoalDate where goalId = :goalId")
-    fun getAllByGoalId(goalId: Long): List<GoalDate>
-
-    @Query("SELECT * FROM GoalDate")
-    fun getAll(): LiveData<List<GoalDate>>
-
     @Insert
     fun create(goalDate: GoalDate): Long
 
-    @Update
-    fun update(goalDate: GoalDate)
+    @Query("SELECT * FROM GoalDate")
+    fun getLiveAll(): LiveData<List<GoalDate>>
 
-    @Query("DELETE FROM GoalDate where date = :date")
-    fun delete(date:Long)
+    @Query("SELECT * FROM GoalDate WHERE goalId = :goalId")
+    fun getLiveAllForGoal(goalId: Long): LiveData<List<GoalDate>>
 
-
+    @Query("DELETE FROM GoalDate WHERE goalId = :goalId AND date = :date")
+    fun delete(goalId: Long, date: Long)
 }
