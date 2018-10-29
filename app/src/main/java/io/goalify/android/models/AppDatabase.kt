@@ -18,21 +18,21 @@ abstract class AppDatabase : RoomDatabase() {
             if (instance == null) {
                 synchronized(AppDatabase::class) {
                     // TODO uncomment this to save across app life cycles
-//                    instance = Room.databaseBuilder(
-//                        context,
-//                        AppDatabase::class.java,
-//                        "goalify.db"
-//                    )
-//                        .allowMainThreadQueries()
-//                        .build()
-
-                    instance = Room.inMemoryDatabaseBuilder(
+                    instance = Room.databaseBuilder(
                         context,
-                        AppDatabase::class.java
+                        AppDatabase::class.java,
+                        "goalify.db"
                     )
-                        .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()
                         .build()
+
+//                    instance = Room.inMemoryDatabaseBuilder(
+//                        context,
+//                        AppDatabase::class.java
+//                    )
+//                        .fallbackToDestructiveMigration()
+//                        .allowMainThreadQueries()
+//                        .build()
                 }
             }
         }

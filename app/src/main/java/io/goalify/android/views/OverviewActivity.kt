@@ -57,7 +57,7 @@ class OverviewActivity : AppCompatActivity() {
 
         setSummaryDayLabels()
 
-        createTestGoals(1)
+        //createTestGoals(1)
     }
 
     private fun setSummaryDayLabels() {
