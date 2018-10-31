@@ -25,20 +25,30 @@ fun createChannel(context: Context) {
     }
 }
 
-fun createNotification(context: Context, goalId: Long): Notification {
+fun createNotification(context: Context, notificationId: Int, goalId: Long): Notification {
     AppDatabase.createInstance(context)
 
     val goal = AppDatabase.getInstance().goalDao().getById(goalId)
 
     val intent = DetailActivity.newIntent(context, goalId)
-    val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val pendingIntent = PendingIntent.getActivity(
+        context,
+        UUID.randomUUID().hashCode(),
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
-    val markIntent = MarkReceiver.newIntent(context, goal.id)
-    val markPendingIntent = PendingIntent.getBroadcast(context, 0, markIntent, 0)
+    val markIntent = MarkReceiver.newIntent(context, notificationId, goal.id)
+    val markPendingIntent = PendingIntent.getBroadcast(
+        context,
+        UUID.randomUUID().hashCode(),
+        markIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     return NotificationCompat.Builder(context, channelId)
         .setSmallIcon(R.drawable.ic_flag)
-        .setContentTitle("Goal Reminder: ${goal.name}")
+        .setContentTitle(goal.name)
         .setContentText(goal.question)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setAutoCancel(true)
