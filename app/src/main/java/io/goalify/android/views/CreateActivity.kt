@@ -1,7 +1,5 @@
 package io.goalify.android.views
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -17,7 +15,7 @@ import formatTime
 import io.goalify.android.R
 import io.goalify.android.models.AppDatabase
 import io.goalify.android.models.Goal
-import io.goalify.android.receivers.NotificationScheduleReceiver
+import io.goalify.android.notifications.setupNotification
 import io.goalify.android.utils.afterTextChanged
 import io.goalify.android.utils.itemSelected
 import io.goalify.android.viewmodels.CreateViewModel
@@ -196,61 +194,16 @@ class CreateActivity : AppCompatActivity() {
         if (goalId != null) {
             goal.id = goalId
 
-            database?.goalDao()?.update(goal)
+            database.goalDao().update(goal)
         }
         // creating a new goal
         else {
             goalId = database?.goalDao()?.create(goal)
-
-            if (goalId == null) {
-                Toast.makeText(this, "Something went wrong! Unable to save goal.", Toast.LENGTH_SHORT).show()
-                return
-            }
         }
 
-        cancelNotification(goalId)
-
-        if (checkBoxUseReminder.isChecked) {
-            setNotification(goalId)
-        }
+        setupNotification(this, goalId)
 
         finish()
-    }
-
-    private fun cancelNotification(goalId: Long){
-        database?.goalDao()?.getById(goalId).let {
-            if (it == null) {
-                return
-            }
-
-            val intent = NotificationScheduleReceiver.newIntent(this, goalId, it.name, it.question)
-
-            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            am.cancel(pendingIntent)
-        }
-    }
-
-    private fun setNotification(goalId: Long) {
-        database?.goalDao()?.getById(goalId).let {
-            if (it == null) {
-                return
-            }
-
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, it.reminderHourOfDay)
-            calendar.set(Calendar.MINUTE, it.reminderMinute)
-            calendar.set(Calendar.SECOND, 0)
-
-            val intent = NotificationScheduleReceiver.newIntent(this, goalId, it.name, it.question)
-
-            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            val am = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            // Notification recurrence is scheduled by the notification appearing in NotificationScheduleReceiver
-            am.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-        }
     }
 
     companion object {

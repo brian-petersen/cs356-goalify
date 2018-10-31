@@ -17,13 +17,13 @@ abstract class AppDatabase : RoomDatabase() {
         fun createInstance(context: Context) {
             if (instance == null) {
                 synchronized(AppDatabase::class) {
-                    // TODO uncomment this to save across app life cycles
                     instance = Room.databaseBuilder(
                         context,
                         AppDatabase::class.java,
                         "goalify.db"
                     )
                         .allowMainThreadQueries()
+                        .fallbackToDestructiveMigration()
                         .build()
 
 //                    instance = Room.inMemoryDatabaseBuilder(
@@ -37,8 +37,8 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        fun getInstance(): AppDatabase? {
-            return instance
+        fun getInstance(): AppDatabase {
+            return instance ?: throw Exception("Cannot get instance of database without calling createInstance first")
         }
     }
 }

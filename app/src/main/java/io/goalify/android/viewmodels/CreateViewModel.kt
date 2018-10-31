@@ -25,7 +25,7 @@ class CreateViewModel : ViewModel() {
     }
 
     fun loadGoal(id: Long) {
-        AppDatabase.getInstance()?.goalDao()?.getById(id).let {
+        AppDatabase.getInstance().goalDao()?.getById(id).let {
             goalId = id
 
             name.value = it?.name

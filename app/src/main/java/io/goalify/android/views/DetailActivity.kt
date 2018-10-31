@@ -24,12 +24,15 @@ private const val INTENT_GOAL_ID = "goal_id"
 
 class DetailActivity : AppCompatActivity() {
 
-    private val database = AppDatabase.getInstance()
+    private lateinit var database: AppDatabase
 
     private fun getModel(): DetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppDatabase.createInstance(this)
+        database = AppDatabase.getInstance()
 
         val goalId = intent.getLongExtra(INTENT_GOAL_ID, INVALID_ID)
         if (goalId == INVALID_ID) {
@@ -74,10 +77,10 @@ class DetailActivity : AppCompatActivity() {
         calendarView.selectionMode = SELECTION_MODE_MULTIPLE
         calendarView.setOnDateChangedListener { _, date, selected ->
             if (selected) {
-                database?.goalDateDao()?.create(GoalDate(goalId = goalId, date = normalizeDate(date.date)))
+                database.goalDateDao().create(GoalDate(goalId = goalId, date = normalizeDate(date.date)))
             }
             else {
-                database?.goalDateDao()?.delete(goalId, date = normalizeDate(date.date))
+                database.goalDateDao().delete(goalId, date = normalizeDate(date.date))
             }
         }
     }

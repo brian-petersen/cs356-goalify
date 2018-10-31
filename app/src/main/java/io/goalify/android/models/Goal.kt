@@ -10,8 +10,7 @@ data class Goal(
     @ColumnInfo var question: String = "",
     @ColumnInfo var reminderHourOfDay: Int = -1,
     @ColumnInfo var reminderMinute: Int = -1,
-    @ColumnInfo var reminderFrequency: Int = -1,
-    @ColumnInfo var notificationId: Int = 0
+    @ColumnInfo var reminderFrequency: Int = -1
 ) {
     fun hasReminder(): Boolean = question != "" &&
         reminderHourOfDay != -1 &&
