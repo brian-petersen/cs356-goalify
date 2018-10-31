@@ -17,6 +17,9 @@ interface GoalDateDao {
     fun create(goalDate: GoalDate): Long
 
     @Query("SELECT * FROM GoalDate")
+    fun getAll(): List<GoalDate>
+
+    @Query("SELECT * FROM GoalDate")
     fun getLiveAll(): LiveData<List<GoalDate>>
 
     @Query("SELECT * FROM GoalDate WHERE goalId = :goalId")

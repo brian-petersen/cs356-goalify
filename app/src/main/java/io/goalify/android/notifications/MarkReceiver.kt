@@ -26,7 +26,9 @@ class MarkReceiver : BroadcastReceiver() {
                 date = normalizeDate(Date())
             ))
         }
-        catch (ex: Exception) { } // swallow error where it's already marked as completed
+        catch (ex: Exception) {
+            ex.printStackTrace()
+        } // swallow error where it's already marked as completed
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(goalId.toInt())

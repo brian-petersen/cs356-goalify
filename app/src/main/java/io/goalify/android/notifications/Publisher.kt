@@ -15,8 +15,8 @@ class Publisher : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val notification = intent.getParcelableExtra<Notification>(INTENT_NOTIFICATION)
         val id = intent.getLongExtra(INTENT_NOTIFICATION_ID, 0)
+        val notification = intent.getParcelableExtra<Notification>(INTENT_NOTIFICATION)
 
         notificationManager.notify(id.toInt(), notification)
     }
